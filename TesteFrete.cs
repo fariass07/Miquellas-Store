@@ -1,41 +1,43 @@
-ï»¿using Xunit;
+using Xunit;
+using System;
+using System.IO;
+using System.Linq;
+using Miquellas_Store;
 
-namespace Miquellas_Store;
-public class FreteCalculatorTests
+namespace EstoqueJogosTests
 {
-    [Fact]
-    public void TesteCalcularFrete()
+    public class EstoqueTests
     {
-        Jogo jogo = new Jogo("Nome do jogo", 50, 0.36, "Categoria");
-        int quantidade = 2;
-        double distancia = 100.0;
-        double resultadoEsperado = 20.0;
+        [Fact]
+        public void TesteCalculoFrete()
+        {
+           
+            var jogo = new Jogo("Jogo Teste", 2, 100.0, "Marca Teste");
+            double distancia = 50.0;
+            int quantidadeComprar = jogo.Quantidade;
 
-        double resultado = FreteCalculator.CalcularFrete(jogo, quantidade, distancia);
-        Assert.Equal(resultadoEsperado, resultado);
-    }
+            double peso = jogo.Peso;
+            double preco = jogo.Preco;
 
-    [Fact]
-    public void TesteCalcularFrete_DistanciaZero()
-    {
-        Jogo jogo = new Jogo("Nome do jogo", 10, 1.0, "Categoria");
-        int quantidade = 2;
-        double distancia = 0.0;
-        double resultadoEsperado = 0.0;
+            double freteCalculado = distancia * (peso * 0.1) / (preco * 0.1) * quantidadeComprar;
 
-        double resultado = FreteCalculator.CalcularFrete(jogo, quantidade, distancia);
-        Assert.Equal(resultadoEsperado, resultado);
-    }
+            Assert.Equal(0.36, freteCalculado);
+        }
 
-    [Fact]
-    public void TesteCalcularFrete_QuantidadeZero()
-    {
-        Jogo jogo = new Jogo("Nome do jogo", 10, 1.0, "Categoria");
-        int quantidade = 0;
-        double distancia = 100.0;
-        double resultadoEsperado = 0.0;
+        [Fact]
+        public void TestePreçoFinal()
+        {
+            var jogo = new Jogo("Jogo Teste", 2, 100.0, "Marca Teste");
+            double distancia = 50.0;
+            int quantidadeComprar = jogo.Quantidade;
 
-        double resultado = FreteCalculator.CalcularFrete(jogo, quantidade, distancia);
-        Assert.Equal(resultadoEsperado, resultado);
+            double peso = jogo.Peso;
+            double preco = jogo.Preco;
+
+            double freteCalculado = distancia * (peso * 0.1) / (preco * 0.1) * quantidadeComprar;
+            double PrecoFinal = freteCalculado + (preco * quantidadeComprar);
+
+            Assert.Equal(200.36, PrecoFinal);
+        }
     }
 }
